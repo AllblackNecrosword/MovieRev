@@ -7,9 +7,9 @@ const token = jwt.sign(
     data: "foobar",
   },
   "secret",
-  { expiresIn: "1h" }
+  // { expiresIn: "1h" }
+  { expiresIn: "10s" }
 );
-
 
 const Register = async (req, res) => {
   // res.json({message:"I am working"})
@@ -34,10 +34,11 @@ const Register = async (req, res) => {
   if (!user) {
     res.status(400).json({ message: "Fail in creating a new user" });
   }
-  res.cookie("jwt",token,{
-    withCredentials: true,
-    httpOnly: false,
-  })
+  res.cookie("jwt", token, {
+    httpOnly: true,
+    secure: false, // Set to true if using HTTPS
+    sameSite: "Lax",
+  });
   res.status(200).json({ user, token });
 };
 
@@ -53,11 +54,11 @@ const Login = async (req, res) => {
   if (!checkpassword) {
     return res.status(401).json({ message: "Invalid Password" });
   }
-  res.cookie("jwt",token,{
+  res.cookie("jwt", token, {
     withCredentials: true,
     httpOnly: false,
-  })
-  res.status(200).json({ user,token});
+  });
+  res.status(200).json({ user, token });
 };
 
 module.exports = {
