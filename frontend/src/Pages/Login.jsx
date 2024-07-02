@@ -63,16 +63,18 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(response.data));
       setError("");
       navigate("/");
+
     } catch (error) {
       setError("An error occurred while registering. Please try again.");
       console.log(error);
     }
   };
-  const token = Cookies.get("jwt");
 
+  const token = Cookies.get("jwt");
   useEffect(() => {
     if (token) {
       navigate("/");
+   
     }
   }, [navigate]);
 
